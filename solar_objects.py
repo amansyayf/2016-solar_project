@@ -41,6 +41,24 @@ class Star:
     image = None
     """Изображение звезды"""
 
+    def color_reassigner(self):
+        if self.color == 'red':
+            self.color = (255, 0, 0)
+        elif self.color == 'orange':
+            self.color = (255, 128, 0)
+        elif self.color == 'green':
+            self.color = (0, 255, 0)
+        elif self.color == 'blue':
+            self.color = (255, 0, 0)
+        elif self.color == 'yellow':
+            self.color = (255, 255, 0)
+        elif self.color == 'white':
+            self.color = (255, 255, 255)
+        elif self.color == 'gray':
+            self.color = (128, 128, 128)
+        elif self.color == 'cyan':
+            self.color = (0, 255, 255)
+
 
 class Planet:
     """Тип данных, описывающий планету.
@@ -80,3 +98,21 @@ class Planet:
 
     image = None
     """Изображение планеты"""
+
+    def color_reassigner(self):
+        if self.color == 'red':
+            self.color = (255, 0, 0)
+        elif self.color == 'orange':
+            self.color = (255, 128, 0)
+        elif self.color == 'green':
+            self.color = (0, 255, 0)
+        elif self.color == 'blue':
+            self.color = (255, 0, 0)
+        elif self.color == 'yellow':
+            self.color = (255, 255, 0)
+        elif self.color == 'white':
+            self.color = (255, 255, 255)
+        elif self.color == 'gray':
+            self.color = (128, 128, 128)
+        elif self.color == 'cyan':
+            self.color = (0, 255, 255)
