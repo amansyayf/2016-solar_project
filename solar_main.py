@@ -170,11 +170,11 @@ def execution():
     for body in space_objects:
         sv.update_object_position(space, body)
     physical_time += time_step
-    #displayed_time.set("%.1f" % physical_time + " seconds gone")
-    #Остатки ткинтера
+    # displayed_time.set("%.1f" % physical_time + " seconds gone")
+    # Остатки ткинтера
 
     if perform_execution:
-        #space.after(101 - int(time_speed.get()), execution)
+        # space.after(101 - int(time_speed.get()), execution)
         pygame.display.update()
 
 
@@ -224,6 +224,7 @@ def open_file_dialog():
             sv.create_planet_image(space, obj)
         else:
             raise AssertionError()
+
 
 #    sv.update_system_name(filename)
 
