@@ -71,7 +71,7 @@ def create_star_image(space, star):
     y = scale_y(star.y)
     r = int(star.R)
     star.color_reassigner()
-    star.image = pygame.draw.circle(space, star.color, (x, y), r)
+    pygame.draw.circle(space, star.color, (x, y), r)
 
 
 def create_planet_image(space, planet):
@@ -87,7 +87,7 @@ def create_planet_image(space, planet):
     y = scale_y(planet.y)
     r = int(planet.R)
     planet.color_reassigner()
-    planet.image = pygame.draw.circle(space, planet.color, (x, y), r)
+    pygame.draw.circle(space, planet.color, (x, y), r)
 
 
 def update_system_name(space, system_name):
@@ -112,12 +112,10 @@ def update_object_position(space, body):
     """
     x = scale_x(body.x)
     y = scale_y(body.y)
-    r = body.R
+    r = int(body.R)
     if x + r < 0 or x - r > window_width or y + r < 0 or y - r > window_height:
-        planet.image = pygame.draw.circle(space, star.color, (window_width + 2 * r, window_height + 2 * r), r)
-    planet.image = pygame.draw.circle(space, star.color, (x, y), r)
-    # Возможно надо убрать planet.image  к это костыл для ткинтера и в нашей проге не нужен,
-    # можно просто функции рисования оставить
+        pygame.draw.circle(space, body.color, (window_width + 2 * r, window_height + 2 * r), r)
+    pygame.draw.circle(space, body.color, (x, y), r)
 
 
 if __name__ == "__main__":
