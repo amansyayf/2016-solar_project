@@ -227,8 +227,7 @@ def open_file_dialog():
         else:
             raise AssertionError()
 
-
-#    sv.update_system_name(filename)
+    sv.update_system_name(space, in_filename)
 
 
 def save_file_dialog():
@@ -262,20 +261,21 @@ def main():
     physical_time = 0
 
     # space - экран
-    space = pygame.display.set_mode((sv.window_width, sv.window_height))  # каждый пробег перекрашивать в черный
+    space = pygame.display.set_mode((sv.window_width, sv.window_height))
     clock = pygame.time.Clock()
     finished = False
-    FPS = 30
+    FPS = 10
     myfont = pygame.font.SysFont('arial', 28)
-    start_button = Button(space, sv.window_width - 50, sv.window_height - 20, lambda: start_execution(), 'Start', 50, 20)
+    start_button = Button(space, sv.window_width - 50, sv.window_height - 20, lambda: start_execution(), 'Start', 50,
+                          20)
     start_button_exists = True
     load_file_button = Button(space, 0, sv.window_height - 20, lambda: open_file_dialog(), 'Open file...', 200, 20)
     save_file_button = Button(space, 0, sv.window_height - 40, lambda: save_file_dialog(), 'Save file...', 200, 20)
 
     c = 0
+    space.fill(black)
     while not finished:
         clock.tick(FPS)
-        space.fill(black)
         for event in pygame.event.get():
             start_button.handle_event(event)
             load_file_button.handle_event(event)
@@ -285,14 +285,15 @@ def main():
             elif perform_execution:
                 execution()
         c += 1
-        time_total = c * time_step//time_step
+        time_total = c * time_step
         time_text = 'time in model = ' + str(time_total)
-        text_surface = myfont.render(time_text, False, (255, 255, 255))
-        space.blit(text_surface, (sv.window_width - 250, 0))
+        text_surface = myfont.render(time_text, False, (224, 224, 224))
+        space.blit(text_surface, (sv.window_width - 350, 0))
         start_button.draw()
         load_file_button.draw()
         save_file_button.draw()
         pygame.display.update()
+        space.fill(black)
     pygame.quit()
     print('Modelling finished!')
 
