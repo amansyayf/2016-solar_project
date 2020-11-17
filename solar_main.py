@@ -3,7 +3,7 @@
 # Сяйфетдинов, Хомяков, Серебряков
 
 import tkinter
-from tkinter.filedialog import *
+from tkinter import filedialog as fd
 from typing import Tuple, Callable
 from pygame.font import SysFont, get_default_font
 import pygame
@@ -15,6 +15,7 @@ import solar_input as si
 black = (0, 0, 0)
 
 start_button_exists = False
+button_recover_time = 10
 
 perform_execution = False
 """Флаг цикличности выполнения расчёта"""
@@ -186,7 +187,8 @@ def start_execution():
     perform_execution = True
     if start_button_exists:
         start_button.text = 'Pause'
-        start_button.click_handler = stop_execution()
+        start_button.click_handler = lambda: stop_execution()
+        time_total = 0
     execution()
     print('Started execution...')
 
@@ -198,7 +200,7 @@ def stop_execution():
     global perform_execution
     perform_execution = False
     start_button.text = 'Start'
-    start_button.click_handler = start_execution()
+    start_button.click_handler = lambda: start_execution()
     print('Paused execution.')
 
 
@@ -212,7 +214,7 @@ def open_file_dialog():
     perform_execution = False
     for obj in space_objects:
         space.delete(obj.image)  # удаление старых изображений планет
-    in_filename = askopenfilename(filetypes=(("Text file", ".txt"),))
+    in_filename = fd.askopenfilename(filetypes=(("Text file", ".txt"),))
     space_objects = si.read_space_objects_data_from_file(in_filename)
     max_distance = max([max(abs(obj.x), abs(obj.y)) for obj in space_objects])
     sv.calculate_scale_factor(max_distance)
@@ -249,6 +251,7 @@ def main():
     global time_speed
     global space
     global start_button
+    global time_total
     time_step = 1000
     time_speed = 100  # связать в dt
 
@@ -272,6 +275,7 @@ def main():
     c = 0
     while not finished:
         clock.tick(FPS)
+        space.fill(black)
         for event in pygame.event.get():
             start_button.handle_event(event)
             load_file_button.handle_event(event)
@@ -281,11 +285,10 @@ def main():
             elif perform_execution:
                 execution()
         c += 1
-        time_total = c * time_step
-        space.fill(black)
-        time_text = str(('time in model = ', time_total))
-        text_surface = myfont.render('time_text', False, (0, 0, 0))
-        space.blit(text_surface, (sv.window_width - 50, 0))
+        time_total = c * time_step//time_step
+        time_text = 'time in model = ' + str(time_total)
+        text_surface = myfont.render(time_text, False, (255, 255, 255))
+        space.blit(text_surface, (sv.window_width - 250, 0))
         start_button.draw()
         load_file_button.draw()
         save_file_button.draw()
