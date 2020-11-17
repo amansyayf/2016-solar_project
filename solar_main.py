@@ -264,10 +264,10 @@ def main():
     finished = False
     FPS = 30
     myfont = pygame.font.SysFont('arial', 28)
-    start_button = Button(space, sv.window_width - 50, sv.window_height - 20, start_execution(), 'Start', 50, 20)
+    start_button = Button(space, sv.window_width - 50, sv.window_height - 20, lambda: start_execution(), 'Start', 50, 20)
     start_button_exists = True
-    load_file_button = Button(space, 0, sv.window_height - 20, open_file_dialog(), 'Open file...', 50, 20)
-    save_file_button = Button(space, 50, sv.window_height - 20, save_file_dialog(), 'Save file...', 50, 20)
+    load_file_button = Button(space, 0, sv.window_height - 20, lambda: open_file_dialog(), 'Open file...', 200, 20)
+    save_file_button = Button(space, 0, sv.window_height - 40, lambda: save_file_dialog(), 'Save file...', 200, 20)
 
     c = 0
     while not finished:
@@ -283,7 +283,8 @@ def main():
         c += 1
         time_total = c * time_step
         space.fill(black)
-        text_surface = myfont.render(('Time in model = ', time_total), False, (0, 0, 0))
+        time_text = str(('time in model = ', time_total))
+        text_surface = myfont.render('time_text', False, (0, 0, 0))
         space.blit(text_surface, (sv.window_width - 50, 0))
         start_button.draw()
         load_file_button.draw()

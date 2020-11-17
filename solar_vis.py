@@ -114,9 +114,6 @@ def update_object_position(space, body):
     y = scale_y(body.y)
     r = body.R
     if x + r < 0 or x - r > window_width or y + r < 0 or y - r > window_height:
-        space.coords(body.image, window_width + r, window_height + r,
-                     window_width + 2 * r, window_height + 2 * r)
-
         planet.image = pygame.draw.circle(space, star.color, (window_width + 2 * r, window_height + 2 * r), r)
     planet.image = pygame.draw.circle(space, star.color, (x, y), r)
     # Возможно надо убрать planet.image  к это костыл для ткинтера и в нашей проге не нужен,
