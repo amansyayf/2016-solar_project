@@ -1,5 +1,6 @@
 # coding: utf-8
 # license: GPLv3
+import pygame
 
 """Модуль визуализации.
 Нигде, кроме этого модуля, не используются экранные координаты объектов.
@@ -68,8 +69,9 @@ def create_star_image(space, star):
 
     x = scale_x(star.x)
     y = scale_y(star.y)
-    r = star.R
-    star.image = space.create_oval([x - r, y - r], [x + r, y + r], fill=star.color)
+    r = int(star.R)
+    star.color_reassigner()
+    star.image = pygame.draw.circle(space, star.color, (x, y), r)
 
 
 def create_planet_image(space, planet):
@@ -83,8 +85,9 @@ def create_planet_image(space, planet):
 
     x = scale_x(planet.x)
     y = scale_y(planet.y)
-    r = planet.R
-    planet.image = space.create_oval([x - r, y - r], [x + r, y + r], fill=planet.color)
+    r = int(planet.R)
+    planet.color_reassigner()
+    planet.image = pygame.draw.circle(space, planet.color, (x, y), r)
 
 
 def update_system_name(space, system_name):
@@ -96,7 +99,7 @@ def update_system_name(space, system_name):
     **space** — холст для рисования.
     **system_name** — название системы тел.
     """
-    space.create_text(30, 80, tag="header", text=system_name, font=header_font)
+    pygame.display.set_caption(system_name)
 
 
 def update_object_position(space, body):
@@ -111,9 +114,10 @@ def update_object_position(space, body):
     y = scale_y(body.y)
     r = body.R
     if x + r < 0 or x - r > window_width or y + r < 0 or y - r > window_height:
-        space.coords(body.image, window_width + r, window_height + r,
-                     window_width + 2 * r, window_height + 2 * r)  # положить за пределы окна
-    space.coords(body.image, x - r, y - r, x + r, y + r)
+        planet.image = pygame.draw.circle(space, star.color, (window_width + 2 * r, window_height + 2 * r), r)
+    planet.image = pygame.draw.circle(space, star.color, (x, y), r)
+    # Возможно надо убрать planet.image  к это костыл для ткинтера и в нашей проге не нужен,
+    # можно просто функции рисования оставить
 
 
 if __name__ == "__main__":

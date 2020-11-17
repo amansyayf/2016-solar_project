@@ -12,6 +12,8 @@ import solar_vis as sv
 import solar_model as sm
 import solar_input as si
 
+black = (0, 0, 0)
+
 start_button_exists = False
 
 perform_execution = False
@@ -164,14 +166,16 @@ def execution():
     """
     global physical_time
     global displayed_time
-    sm.recalculate_space_objects_positions(space_objects, time_step.get())
+    sm.recalculate_space_objects_positions(space_objects, time_step)
     for body in space_objects:
         sv.update_object_position(space, body)
-    physical_time += time_step.get()
-    displayed_time.set("%.1f" % physical_time + " seconds gone")
+    physical_time += time_step
+    # displayed_time.set("%.1f" % physical_time + " seconds gone")
+    # Остатки ткинтера
 
     if perform_execution:
-        space.after(101 - int(time_speed.get()), execution)
+        # space.after(101 - int(time_speed.get()), execution)
+        pygame.display.update()
 
 
 def start_execution():
@@ -222,6 +226,9 @@ def open_file_dialog():
             raise AssertionError()
 
 
+#    sv.update_system_name(filename)
+
+
 def save_file_dialog():
     """Открывает диалоговое окно выбора имени файла и вызывает
     функцию считывания параметров системы небесных тел из данного файла.
@@ -233,7 +240,7 @@ def save_file_dialog():
 
 def main():
     """Главная функция главного модуля.
-    Создаёт объекты графического дизайна библиотеки tkinter: окно, холст, фрейм с кнопками, кнопки.
+    Создаёт объекты графического дизайна библиотеки pygame: окно, холст, фрейм с кнопками, кнопки.
     """
     global start_button_exists
     global physical_time
@@ -242,6 +249,8 @@ def main():
     global time_speed
     global space
     global start_button
+    time_step = 1000
+    time_speed = 100  # связать в dt
 
     pygame.init()
     pygame.font.init()
@@ -255,12 +264,10 @@ def main():
     finished = False
     FPS = 30
     myfont = pygame.font.SysFont('arial', 28)
-    start_button = Button(space, sv.window_width - 50, sv.window_height - 20, start_execution(), 'Start', 50, 20)
+    start_button = Button(space, sv.window_width - 50, sv.window_height - 20, lambda: start_execution(), 'Start', 50, 20)
     start_button_exists = True
-    time_step = 1000
-    time_speed = 100  # связать в dt
-    load_file_button = Button(space, 0, sv.window_height - 20, open_file_dialog(), 'Open file...', 50, 20)
-    save_file_button = Button(space, 50, sv.window_height - 20, save_file_dialog(), 'Save file...', 50, 20)
+    load_file_button = Button(space, 0, sv.window_height - 20, lambda: open_file_dialog(), 'Open file...', 200, 20)
+    save_file_button = Button(space, 0, sv.window_height - 40, lambda: save_file_dialog(), 'Save file...', 200, 20)
 
     c = 0
     while not finished:
@@ -275,11 +282,14 @@ def main():
                 execution()
         c += 1
         time_total = c * time_step
-        text_surface = myfont.render(('Time in model = ', time_total), False, (0, 0, 0))
+        space.fill(black)
+        time_text = str(('time in model = ', time_total))
+        text_surface = myfont.render('time_text', False, (0, 0, 0))
         space.blit(text_surface, (sv.window_width - 50, 0))
         start_button.draw()
         load_file_button.draw()
         save_file_button.draw()
+        pygame.display.update()
     pygame.quit()
     print('Modelling finished!')
 
